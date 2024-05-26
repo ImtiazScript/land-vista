@@ -14,13 +14,13 @@ mongoose.connect('mongodb://localhost:27017/real-estate', {
 });
 
 const landSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String,
-  coordinates: [Number],
-});
+    name: String,
+    price: Number,
+    description: String,
+    coordinates: [[Number]], // Changed to store an array of arrays for multiple coordinates (corners)
+  });
 
-const Land = mongoose.model('Land', landSchema);
+  const Land = mongoose.model('Land', landSchema);
 
 // Routes
 app.get('/api/lands', async (req, res) => {
@@ -29,8 +29,14 @@ app.get('/api/lands', async (req, res) => {
 });
 
 app.post('/api/lands', async (req, res) => {
-  const newLand = new Land(req.body);
-  await newLand.save();
+  // Example data for creating a land
+const newLand = new Land({
+    name: req.body.name,
+    price: req.body.price,
+    description: req.body.description,
+    coordinates: req.body.coordinates
+  });
+  await newLand.save().then(() => console.log('Land created'));
   res.json(newLand);
 });
 
