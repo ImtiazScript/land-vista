@@ -1,4 +1,3 @@
-// src/pages/CreateNewPage.js
 import React from 'react';
 
 const CreateNewPage = () => {
