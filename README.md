@@ -16,6 +16,10 @@ Welcome to the Real Estate Map Application! This application allows users to bro
 
 ## Getting Started
 
+Prerequisites:
+1. NodeJs should be installed on the system
+2. MongoDB should be installed on the system and running on: mongodb://localhost:27017/
+
 To run the application locally, follow these steps:
 
 1. Clone the repository:
@@ -42,7 +46,7 @@ npm install
 
 5. Start the backend server:
 ```bash
-npm start
+npm devStart
 ```
 
 6. Start the frontend development server:
