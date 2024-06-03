@@ -1,0 +1,41 @@
+- .gitignore
+- .idea
+  - to-do
+- client
+  - .gitignore
+  - package-lock.json
+  - package.json
+  - public
+    - favicon.ico
+    - images
+      - 1.png
+      - 2.png
+      - place_holder.png
+    - index.html
+    - logo192.png
+    - logo512.png
+    - manifest.json
+    - robots.txt
+  - README.md
+  - src
+    - App.css
+    - App.js
+    - App.test.js
+    - components
+      - CreateNew.js
+      - MapView.js
+      - NavBar.js
+      - Search.js
+    - index.css
+    - index.js
+    - logo.svg
+    - pages
+      - CreateNewPage.js
+      - HomePage.js
+      - SearchPage.js
+    - reportWebVitals.js
+    - setupTests.js
+- package-lock.json
+- package.json
+- README.md
+- server.js

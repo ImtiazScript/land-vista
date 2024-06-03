@@ -8,6 +8,9 @@ Welcome to the Real Estate Map Application! This application allows users to bro
 - View details of each land, including name, price, and description.
 - Add new lands with their details.
 
+![Map](https://github.com/imtiazUAP/real-estate-map/raw/main/images/map.png)
+
+
 ## Technologies Used
 
 - Frontend: React.js, React-Leaflet
