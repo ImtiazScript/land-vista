@@ -29,7 +29,6 @@ app.get('/api/lands', async (req, res) => {
 });
 
 app.post('/api/lands', async (req, res) => {
-  // Example data for creating a land
 const newLand = new Land({
     name: req.body.name,
     price: req.body.price,
