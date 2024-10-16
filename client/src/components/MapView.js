@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, Polygon, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Button, Modal, Box, IconButton, Typography, TextField, Tooltip } from '@mui/material';
+import { Button, Modal, Box, IconButton, Typography, TextField, Tooltip, MenuItem, ListItemText } from '@mui/material';
 import { Cancel, Undo, Save, Add } from '@mui/icons-material';
 
 const MapView = () => {
@@ -21,6 +21,7 @@ const MapView = () => {
 
   const [searchQuery, setSearchQuery] = useState('');  // Store search input
   const [mapCenter, setMapCenter] = useState([22.94275737438829, 89.18402516392086]);
+  const [searchResults, setSearchResults] = useState([]);
 
   // Fetch existing lands from the server
   useEffect(() => {
@@ -32,6 +33,44 @@ const MapView = () => {
         console.error('There was an error fetching the lands!', error);
       });
   }, []);
+
+    // Handle live search as the user types
+    const handleSearchChange = (event) => {
+      setSearchQuery(event.target.value);
+      if (event.target.value.trim()) {
+        fetchSearchResults(event.target.value);
+      } else {
+        setSearchResults([]);
+      }
+    };
+  
+    const fetchSearchResults = (query) => {
+      if (query.length < 4) {
+        return;
+      }
+      const searchUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address=${encodeURIComponent(query)}&maxLocations=10&countryCode=BD&f=json`;
+  
+      axios.get(searchUrl)
+        .then((response) => {
+          const candidates = response.data.candidates;
+          if (candidates && candidates.length > 0) {
+            setSearchResults(candidates);
+          } else {
+            setSearchResults([]);
+          }
+        })
+        .catch((error) => {
+          console.error('Error performing geocode search', error);
+          setSearchResults([]);
+        });
+    };
+  
+    // Set the map center based on selected candidate
+    const handleSearchResultClick = (location) => {
+      setMapCenter([location.y, location.x]);  // Update map center
+      setSearchResults([]); // Clear search results after selection
+    };
+  
 
   const handleLandClick = (land) => {
     setSelectedLand(land);
@@ -118,31 +157,6 @@ const MapView = () => {
     return null;
   };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  // Function to handle the search and move the map center
-  const handleSearch = () => {
-    if (searchQuery) {
-      const searchUrl0 = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&text=${encodeURIComponent(searchQuery)}&maxLocations=1`;
-      const searchUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address=${encodeURIComponent(searchQuery)}&f=json`;
-
-      axios.get(searchUrl)
-        .then((response) => {
-          const candidates = response.data.candidates;
-          if (candidates && candidates.length > 0) {
-            const { location } = candidates[0];
-            console.log('location: ', location);
-            setMapCenter([location.y, location.x]);  // Update map center
-          }
-        })
-        .catch((error) => {
-          console.error('Error performing geocode search', error);
-        });
-    }
-  };
-
   const MapCenterUpdater = ({ mapCenter }) => {
     const map = useMap();
     useEffect(() => {
@@ -151,21 +165,29 @@ const MapView = () => {
     return null;
   };
 
-  // const mapCenter = [22.94275737438829, 89.18402516392086]; // Coordinates for the center of the map
-  console.log('--- mapCenter: ', mapCenter);
-
   return (
     <>
-      {/* Search box */}
-      <Box sx={{ position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
+      {/* Floating Search Box */}
+      <Box className="searchBox">
         <TextField
-          label="Search Location"
+          placeholder="Search Location"
           value={searchQuery}
           onChange={handleSearchChange}
           variant="outlined"
-          sx={{ width: '300px' }}
+          sx={{ width: '100%' }}
+          autoComplete="off"
         />
-        <Button onClick={handleSearch} sx={{ marginLeft: 2 }} variant="contained">Search</Button>
+
+        {/* Dropdown for search suggestions */}
+        {searchResults.length > 0 && (
+          <Box sx={{ position: 'absolute', top: '60px', left: '50%', transform: 'translateX(-50%)', width: '300px', backgroundColor: 'white', zIndex: 1000, boxShadow: 2 }}>
+            {searchResults.map((result, index) => (
+              <MenuItem key={index} onClick={() => handleSearchResultClick(result.location)}>
+                <ListItemText primary={result.address} />
+              </MenuItem>
+            ))}
+          </Box>
+        )}
       </Box>
       <MapContainer center={mapCenter} zoom={18} style={{ height: '95vh', width: '100%' }}>
         <TileLayer
@@ -194,22 +216,7 @@ const MapView = () => {
         <MapCenterUpdater mapCenter={mapCenter} />
 
         {/* Floating Toolbox/Button Tray */}
-        <Box
-          sx={{
-            position: 'fixed',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            boxShadow: 3,
-            padding: 1,
-            borderRadius: 1,
-            zIndex: 1000,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
+        <Box className="toolBox">
           {toolboxOpen ? (
             <>
               {/* Revert button with icon */}
