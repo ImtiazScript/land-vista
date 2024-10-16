@@ -1,15 +1,42 @@
 import React, { useState } from 'react';
-import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
-  const [newLandData, setNewLandData] = useState({ name: '', imageUrl: '', price: '', type: '' });
+  const [newLandData, setNewLandData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    type: '',
+    availabilityStatus: '',
+    ownershipType: '',
+  });
+  const [image, setImage] = useState(null);
 
   const handleInputChange = (e) => {
     setNewLandData({ ...newLandData, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]); // Store the file object
+  };
+
   const handleSave = () => {
-    handleSaveLand(newLandData); // Pass the land data to the parent
+    const formData = new FormData();
+    formData.append('name', newLandData.name);
+    formData.append('description', newLandData.description);
+    formData.append('price', newLandData.price);
+    formData.append('type', newLandData.type);
+    formData.append('availabilityStatus', newLandData.availabilityStatus);
+    formData.append('ownershipType', newLandData.ownershipType);
+    if (image) formData.append('image', image); // Append the image file
+
+    // console.log('formData in modal: ', formData);
+      // Log the FormData content for verification
+//   for (let [key, value] of formData.entries()) {
+//     console.log(`${key}: ${value}`);
+//   }
+
+    handleSaveLand(formData); // Pass FormData to the parent
   };
 
   return (
@@ -36,11 +63,11 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           onChange={handleInputChange}
         />
         <TextField
-          label="Image URL"
+          label="Description"
           fullWidth
           margin="normal"
-          name="imageUrl"
-          value={newLandData.imageUrl}
+          name="description"
+          value={newLandData.description}
           onChange={handleInputChange}
         />
         <TextField
@@ -51,16 +78,47 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           value={newLandData.price}
           onChange={handleInputChange}
         />
-        <TextField
-          label="Type"
-          fullWidth
-          margin="normal"
-          name="type"
-          value={newLandData.type}
-          onChange={handleInputChange}
-        />
+        
+        {/* Type Dropdown */}
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Type</InputLabel>
+          <Select name="type" value={newLandData.type} onChange={handleInputChange}>
+            <MenuItem value="Residential">Residential</MenuItem>
+            <MenuItem value="Commercial">Commercial</MenuItem>
+            <MenuItem value="Farming">Farming</MenuItem>
+            <MenuItem value="Fish Farm">Fish Farm</MenuItem>
+          </Select>
+        </FormControl>
 
-        <Button variant="contained" color="primary" onClick={handleSave}>
+        {/* Availability Status Dropdown */}
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Availability Status</InputLabel>
+          <Select name="availabilityStatus" value={newLandData.availabilityStatus} onChange={handleInputChange}>
+            <MenuItem value="For Sale">For Sale</MenuItem>
+            <MenuItem value="For Rent">For Rent</MenuItem>
+            <MenuItem value="Sold">Sold</MenuItem>
+            <MenuItem value="Leased">Leased</MenuItem>
+            <MenuItem value="Auction">Auction</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Ownership Type Dropdown */}
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Ownership Type</InputLabel>
+          <Select name="ownershipType" value={newLandData.ownershipType} onChange={handleInputChange}>
+            <MenuItem value="Private">Private</MenuItem>
+            <MenuItem value="Government">Government</MenuItem>
+            <MenuItem value="Common">Common</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Image Upload */}
+        <Button variant="contained" component="label">
+          Upload Image
+          <input type="file" hidden onChange={handleImageChange} />
+        </Button>
+
+        <Button variant="contained" color="primary" onClick={handleSave} sx={{ mt: 2 }}>
           Save Land
         </Button>
       </Box>

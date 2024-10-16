@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const port = 5000;
@@ -7,46 +10,74 @@ const port = 5000;
 // Middleware to parse JSON
 app.use(express.json());
 
-// Connect to MongoDB without deprecated options
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Serve static files (for images)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/real-estate')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB:', err));
 
-
+// Define the schema
 const landSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    imageUrl: String,
-    price: Number,
-    type: { type: String, enum: ['Residential', 'Commercial', 'Farming', 'Fish Farm'] },
-    availabilityStatus: { type: String, enum: ['For Sale', 'For Rent', 'Sold', 'Leased', 'Auction'] },
-    ownershipType: { type: String, enum: ['Private', 'Government', 'Common'] },
-    coordinates: [[Number]],
-  });
+  name: String,
+  description: String,
+  imageUrl: String,
+  price: Number,
+  type: { type: String, enum: ['Residential', 'Commercial', 'Farming', 'Fish Farm'] },
+  availabilityStatus: { type: String, enum: ['For Sale', 'For Rent', 'Sold', 'Leased', 'Auction'] },
+  ownershipType: { type: String, enum: ['Private', 'Government', 'Common'] },
+  coordinates: [[Number]],
+});
 
-  const Land = mongoose.model('Land', landSchema);
+const Land = mongoose.model('Land', landSchema);
 
-// Routes
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Destination folder for uploaded images
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+  }
+});
+const upload = multer({ storage });
+
+// Route to get all lands
 app.get('/api/lands', async (req, res) => {
   const lands = await Land.find();
   res.json(lands);
 });
 
-app.post('/api/lands', async (req, res) => {
-const newLand = new Land({
+// Route to create a new land with image upload
+app.post('/api/lands', upload.single('image'), async (req, res) => {
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const newLand = new Land({
     name: req.body.name,
     description: req.body.description,
-    imageUrl: req.body.imageUrl,
+    imageUrl,
     price: req.body.price,
     type: req.body.type,
     availabilityStatus: req.body.availabilityStatus,
     ownershipType: req.body.ownershipType,
-    coordinates: req.body.coordinates
+    coordinates: JSON.parse(req.body.coordinates)
   });
-  await newLand.save().then(() => console.log('Land created'));
+
+  await newLand.save()
+    .then(() => console.log('Land created'))
+    .catch(err => console.error('Error saving land', err));
+
   res.json(newLand);
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

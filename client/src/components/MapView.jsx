@@ -58,20 +58,48 @@ const MapView = () => {
     setClickedPositions(sliced);
   };
 
-  const handleLandCreationSave = (newLandData) => {
-    const landData = { coordinates: clickedPositions, ...newLandData };
-    axios
-      .post("/api/lands", landData)
-      .then((response) => {
-        setLands([...lands, response.data]);
-        setShowSaveModal(false);
-        setClickedPositions([]);
-        setToolboxOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error saving land", error);
-      });
+  // const handleLandCreationSave = (newLandData) => {
+  //   const landData = { coordinates: clickedPositions, ...newLandData };
+  //   axios
+  //     .post("/api/lands", landData)
+  //     .then((response) => {
+  //       setLands([...lands, response.data]);
+  //       setShowSaveModal(false);
+  //       setClickedPositions([]);
+  //       setToolboxOpen(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error saving land", error);
+  //     });
+  // };
+
+  const handleLandCreationSave = (formData) => {
+    console.log('formData:', formData);
+  
+    // Append the coordinates array as a JSON string to FormData
+    formData.append('coordinates', JSON.stringify(clickedPositions));
+  
+    // Log the formData to verify that coordinates are correctly appended
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+  
+    axios.post('/api/lands', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(response => {
+      setLands([...lands, response.data]);
+      setShowSaveModal(false);
+      setClickedPositions([]); // Reset clicked positions
+      setToolboxOpen(false);
+    })
+    .catch(error => {
+      console.error('Error saving land', error);
+    });
   };
+  
 
   // LocationMarker
   const LocationMarker = () => {
@@ -148,8 +176,9 @@ const MapView = () => {
         handleSaveLand={handleLandCreationSave}
       />
       <LandDetailsModal
-        land={selectedLand}
+        open={!!selectedLand}
         onClose={() => setSelectedLand(null)}
+        land={selectedLand}
       />
     </>
   );
