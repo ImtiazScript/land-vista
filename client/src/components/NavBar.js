@@ -50,9 +50,6 @@ const NavBar = () => {
             <NavLink to="/search">
               <Button color="inherit">Search</Button>
             </NavLink>
-            <NavLink to="/create">
-              <Button color="inherit">Create New</Button>
-            </NavLink>
             <Button color="inherit">Login</Button>
           </Box>
         </Toolbar>

@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* index.css */
+.icon-button-style {
+  background-color: #ffffff !important;  /* White background */
+  border-radius: 50% !important;       /* Circular shape */
+  padding: 8px !important;             /* Increased padding for better size */
+  transition: background-color 0.3s ease !important; /* Smooth transition for hover effect */
+}
+
+.icon-button-style:hover {
+  background-color: rgba(255, 255, 255, 0.8) !important; /* Lighter background on hover */
+}
+
+.icon-button-style.Mui-disabled {
+  background-color: rgba(255, 255, 255, 0.6) !important; /* Lighter white when disabled */
+  color: rgba(0, 0, 0, 0.4) !important;                   /* Dimmed color for disabled state */
+}
+
+/* For screens smaller than 600px (mobile view) */
+@media (max-width: 600px) {
+  .icon-button-style {
+    padding: 4px !important;  /* Smaller padding for mobile devices */
+  }
+}
+
