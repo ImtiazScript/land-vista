@@ -58,48 +58,34 @@ const MapView = () => {
     setClickedPositions(sliced);
   };
 
-  // const handleLandCreationSave = (newLandData) => {
-  //   const landData = { coordinates: clickedPositions, ...newLandData };
-  //   axios
-  //     .post("/api/lands", landData)
-  //     .then((response) => {
-  //       setLands([...lands, response.data]);
-  //       setShowSaveModal(false);
-  //       setClickedPositions([]);
-  //       setToolboxOpen(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error saving land", error);
-  //     });
-  // };
-
   const handleLandCreationSave = (formData) => {
-    console.log('formData:', formData);
-  
+    console.log("formData:", formData);
+
     // Append the coordinates array as a JSON string to FormData
-    formData.append('coordinates', JSON.stringify(clickedPositions));
-  
+    formData.append("coordinates", JSON.stringify(clickedPositions));
+
     // Log the formData to verify that coordinates are correctly appended
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
-  
-    axios.post('/api/lands', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then(response => {
-      setLands([...lands, response.data]);
-      setShowSaveModal(false);
-      setClickedPositions([]); // Reset clicked positions
-      setToolboxOpen(false);
-    })
-    .catch(error => {
-      console.error('Error saving land', error);
-    });
+
+    axios
+      .post("/api/lands", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setLands([...lands, response.data]);
+        setShowSaveModal(false);
+        setClickedPositions([]); // Reset clicked positions
+        setToolboxOpen(false);
+        setIsCreatingLand(false);
+      })
+      .catch((error) => {
+        console.error("Error saving land", error);
+      });
   };
-  
 
   // LocationMarker
   const LocationMarker = () => {
@@ -115,6 +101,19 @@ const MapView = () => {
         }
       },
     });
+    return null;
+  };
+
+  // Map cursor change on land creation mode
+  const MapCursorUpdater = () => {
+    const map = useMap();
+    useEffect(() => {
+      if (isCreatingLand) {
+        map.getContainer().style.cursor = "default";
+      } else {
+        map.getContainer().style.cursor = "";
+      }
+    }, [map, isCreatingLand]);
     return null;
   };
 
@@ -158,6 +157,7 @@ const MapView = () => {
 
         <LocationMarker />
         <MapCenterUpdater mapCenter={mapCenter} />
+        <MapCursorUpdater />
 
         <SearchBox onSearchResultClick={handleSearchResultClick} />
         <ToolBox
