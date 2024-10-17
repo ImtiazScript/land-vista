@@ -50,9 +50,61 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Route to get all lands
+// app.get('/api/lands', async (req, res) => {
+//   const lands = await Land.find();
+//   res.json(lands);
+// });
+
+// Route to get lands with optional filters
 app.get('/api/lands', async (req, res) => {
-  const lands = await Land.find();
-  res.json(lands);
+  try {
+    const { type, availabilityStatus, ownershipType, areaRange } = req.query;
+    console.log('type: ', type);
+    console.log('availabilityStatus: ', availabilityStatus);
+    console.log('ownershipType: ', ownershipType);
+    console.log('areaRange:', areaRange);
+    const filter = {};
+
+    // Check if type is an array, if so use it directly. Otherwise, split by comma if it's a string.
+    if (type && Array.isArray(type)) {
+      filter.type = { $in: type };
+    } else if (type) {
+      filter.type = { $in: type.split(",") };
+    }
+
+    // Handle availabilityStatus filter similarly.
+    if (availabilityStatus && Array.isArray(availabilityStatus)) {
+      filter.availabilityStatus = { $in: availabilityStatus };
+    } else if (availabilityStatus) {
+      filter.availabilityStatus = { $in: availabilityStatus.split(",") };
+    }
+
+    // Handle ownershipType filter similarly.
+    if (ownershipType && Array.isArray(ownershipType)) {
+      filter.ownershipType = { $in: ownershipType };
+    } else if (ownershipType) {
+      filter.ownershipType = { $in: ownershipType.split(",") };
+    }
+
+    // Get lands within the specified area range (500m or 1000m) of map center
+    const center = req.query.center ? JSON.parse(req.query.center) : [22.94275737438829, 89.18402516392086];
+
+    if (areaRange) {
+      // Assuming coordinates are stored as [latitude, longitude]
+      const radius = parseInt(areaRange, 10);
+      filter.coordinates = {
+        $geoWithin: {
+          $centerSphere: [center, radius / 3963.2], // Radius in miles
+        },
+      };
+    }
+
+    const lands = await Land.find(filter).exec();
+    res.json(lands);
+  } catch (error) {
+    console.error("Error fetching lands", error);
+    res.status(500).send("Error fetching lands");
+  }
 });
 
 // Route to create a new land with image upload

@@ -13,6 +13,7 @@ import LandDetailsModal from "./Modals/LandDetailsModal";
 import SearchBox from "./SearchBox";
 import ToolBox from "./ToolBox";
 import { landTypeColor } from "../utils/helper";
+import FilterPanel from './FilterPanel';
 
 const MapCenterUpdater = ({ mapCenter }) => {
   const map = useMap();
@@ -34,17 +35,28 @@ const MapView = () => {
   const [mapCenter, setMapCenter] = useState([
     22.94275737438829, 89.18402516392086,
   ]);
+  const [filter, setFilter] = useState({
+    type: [],
+    availabilityStatus: [],
+    ownershipType: [],
+    areaRange: 500, // Default range
+  });
+  const [appliedFilter, setAppliedFilter] = useState(filter);
 
   useEffect(() => {
     axios
-      .get("/api/lands")
+      .get("/api/lands", { params: appliedFilter })
       .then((response) => {
         setLands(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the lands!", error);
       });
-  }, []);
+  }, [appliedFilter]);
+
+  const handleApplyFilter = (newFilter) => {
+    setAppliedFilter(newFilter); // Update filter state and trigger the API call
+  };
 
   // Search
   const handleSearchResultClick = (location) => {
@@ -136,6 +148,7 @@ const MapView = () => {
         zoom={18}
         style={{ height: "95vh", width: "100%" }}
       >
+        <FilterPanel filter={filter} setFilter={setFilter} onApplyFilter={handleApplyFilter} />
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           maxZoom={19}
