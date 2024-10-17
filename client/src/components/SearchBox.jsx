@@ -52,7 +52,13 @@ const SearchBox = ({ onSearchResultClick }) => {
       {searchResults.length > 0 && (
         <Box sx={{ position: 'absolute', top: '60px', left: '50%', transform: 'translateX(-50%)', width: '300px', backgroundColor: 'white', zIndex: 1000, boxShadow: 2 }}>
           {searchResults.map((result, index) => (
-            <MenuItem key={index} onClick={() => onSearchResultClick(result.location)}>
+            <MenuItem
+              key={index}
+              onClick={() => {
+                setSearchResults([]);
+                onSearchResultClick(result.location)
+              }}
+            >
               <ListItemText primary={result.address} />
             </MenuItem>
           ))}

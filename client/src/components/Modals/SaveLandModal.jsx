@@ -64,19 +64,12 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           value={newLandData.description}
           onChange={handleInputChange}
         />
-        <TextField
-          label="Price"
-          fullWidth
-          margin="normal"
-          name="price"
-          value={newLandData.price}
-          onChange={handleInputChange}
-        />
 
         {/* Type Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel>Type</InputLabel>
           <Select
+            label="Type"
             name="type"
             value={newLandData.type}
             onChange={handleInputChange}
@@ -92,6 +85,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
         <FormControl fullWidth margin="normal">
           <InputLabel>Availability Status</InputLabel>
           <Select
+            label="Availability Status"
             name="availabilityStatus"
             value={newLandData.availabilityStatus}
             onChange={handleInputChange}
@@ -104,10 +98,22 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           </Select>
         </FormControl>
 
+        {(newLandData.availabilityStatus === "For Sale" || newLandData.availabilityStatus === "For Rent") && (
+          <TextField
+            label={newLandData.availabilityStatus === "For Sale" ? 'Price' : 'Monthly Rent'}
+            fullWidth
+            margin="normal"
+            name="price"
+            value={newLandData.price}
+            onChange={handleInputChange}
+          />
+        )}
+
         {/* Ownership Type Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel>Ownership Type</InputLabel>
           <Select
+            label="Ownership Type"
             name="ownershipType"
             value={newLandData.ownershipType}
             onChange={handleInputChange}
