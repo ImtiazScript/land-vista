@@ -59,8 +59,10 @@ const MapView = () => {
   };
 
   const handleLandCreationCancel = () => {
-    setClickedPositions([]);
+    setClickedPositions([]); // Reset clicked positions
     setToolboxOpen(false);
+    setShowSaveModal(false);
+    setIsCreatingLand(false);
   };
 
   const handleLandCreationRevert = () => {
@@ -173,7 +175,7 @@ const MapView = () => {
 
       <SaveLandModal
         open={showSaveModal}
-        onClose={() => setShowSaveModal(false)}
+        onClose={handleLandCreationCancel}
         handleSaveLand={handleLandCreationSave}
       />
       <LandDetailsModal

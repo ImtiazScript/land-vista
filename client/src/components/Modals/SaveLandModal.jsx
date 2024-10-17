@@ -30,12 +30,6 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
     formData.append('ownershipType', newLandData.ownershipType);
     if (image) formData.append('image', image); // Append the image file
 
-    // console.log('formData in modal: ', formData);
-      // Log the FormData content for verification
-//   for (let [key, value] of formData.entries()) {
-//     console.log(`${key}: ${value}`);
-//   }
-
     handleSaveLand(formData); // Pass FormData to the parent
   };
 
@@ -43,12 +37,12 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
     <Modal open={open} onClose={onClose}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 400,
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
         }}
@@ -78,11 +72,15 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           value={newLandData.price}
           onChange={handleInputChange}
         />
-        
+
         {/* Type Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel>Type</InputLabel>
-          <Select name="type" value={newLandData.type} onChange={handleInputChange}>
+          <Select
+            name="type"
+            value={newLandData.type}
+            onChange={handleInputChange}
+          >
             <MenuItem value="Residential">Residential</MenuItem>
             <MenuItem value="Commercial">Commercial</MenuItem>
             <MenuItem value="Farming">Farming</MenuItem>
@@ -93,7 +91,11 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
         {/* Availability Status Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel>Availability Status</InputLabel>
-          <Select name="availabilityStatus" value={newLandData.availabilityStatus} onChange={handleInputChange}>
+          <Select
+            name="availabilityStatus"
+            value={newLandData.availabilityStatus}
+            onChange={handleInputChange}
+          >
             <MenuItem value="For Sale">For Sale</MenuItem>
             <MenuItem value="For Rent">For Rent</MenuItem>
             <MenuItem value="Sold">Sold</MenuItem>
@@ -105,22 +107,62 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
         {/* Ownership Type Dropdown */}
         <FormControl fullWidth margin="normal">
           <InputLabel>Ownership Type</InputLabel>
-          <Select name="ownershipType" value={newLandData.ownershipType} onChange={handleInputChange}>
+          <Select
+            name="ownershipType"
+            value={newLandData.ownershipType}
+            onChange={handleInputChange}
+          >
             <MenuItem value="Private">Private</MenuItem>
             <MenuItem value="Government">Government</MenuItem>
             <MenuItem value="Common">Common</MenuItem>
           </Select>
         </FormControl>
 
-        {/* Image Upload */}
-        <Button variant="contained" component="label">
-          Upload Image
-          <input type="file" hidden onChange={handleImageChange} />
-        </Button>
+        <FormControl fullWidth margin="normal">
+          <Button
+            variant="outlined"
+            component="label"
+            sx={{
+              marginTop: "7px",
+              fontSize: "16px",
+              width: "100%",
+            }}
+          >
+            Choose Photo
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              hidden
+            />
+          </Button>
+          {image && (
+            <Typography variant="body2" sx={{ marginTop: "8px" }}>
+              {image.name}
+            </Typography>
+          )}
+        </FormControl>
 
-        <Button variant="contained" color="primary" onClick={handleSave} sx={{ mt: 2 }}>
-          Save Land
-        </Button>
+        {/* Save Button Aligned to the Right */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "16px",
+          }}
+        >
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={onClose} // This will close the modal when Cancel is clicked
+            sx={{ marginRight: "8px" }} // Space between Cancel and Save buttons
+          >
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Save Land
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );
