@@ -8,7 +8,7 @@ const ToolBox = ({ toolboxOpen, clickedPositions, handleRevert, setShowSaveModal
     {toolboxOpen ? (
       <>
         {/* Revert button with icon */}
-        <Tooltip title="Undo">
+        <Tooltip title="Undo" placement="left">
           <span>
             <IconButton
               color="warning"
@@ -22,7 +22,7 @@ const ToolBox = ({ toolboxOpen, clickedPositions, handleRevert, setShowSaveModal
         </Tooltip>
 
         {/* Save Land button with icon */}
-        <Tooltip title="Save">
+        <Tooltip title="Save" placement="left">
           <span>
             <IconButton
               className="icon-button-style"
@@ -36,7 +36,7 @@ const ToolBox = ({ toolboxOpen, clickedPositions, handleRevert, setShowSaveModal
         </Tooltip>
 
         {/* Cancel button */}
-        <Tooltip title="Cancel">
+        <Tooltip title="Cancel" placement="left">
           <span>
             <IconButton
               className="icon-button-style"
@@ -49,7 +49,7 @@ const ToolBox = ({ toolboxOpen, clickedPositions, handleRevert, setShowSaveModal
         </Tooltip>
       </>
     ) : (
-      <Tooltip title="Add new">
+      <Tooltip title="Add new" placement="left">
         <span>
           <IconButton
             className="icon-button-style"

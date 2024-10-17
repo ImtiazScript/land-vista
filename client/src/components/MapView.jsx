@@ -14,6 +14,16 @@ import SearchBox from "./SearchBox";
 import ToolBox from "./ToolBox";
 import { landTypeColor } from "../utils/helper";
 
+const MapCenterUpdater = ({ mapCenter }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (mapCenter) {
+      map.setView(mapCenter, map.getZoom(), { animate: true });
+    }
+  }, [map, mapCenter]);
+  return null;
+};
+
 const MapView = () => {
   const [lands, setLands] = useState([]);
   const [selectedLand, setSelectedLand] = useState(null);
@@ -114,15 +124,6 @@ const MapView = () => {
         map.getContainer().style.cursor = "";
       }
     }, [map, isCreatingLand]);
-    return null;
-  };
-
-  // Location updater based on search result click
-  const MapCenterUpdater = ({ mapCenter }) => {
-    const map = useMap();
-    useEffect(() => {
-      map.setView(mapCenter, map.getZoom(), { animate: true });
-    }, [map, mapCenter]);
     return null;
   };
 
