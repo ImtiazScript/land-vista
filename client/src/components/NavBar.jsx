@@ -41,7 +41,7 @@ const NavBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Real Estate Map
+            Land Vista
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <NavLink to="/">

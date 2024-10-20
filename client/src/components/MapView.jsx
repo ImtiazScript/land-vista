@@ -12,16 +12,38 @@ import SaveLandModal from "./Modals/SaveLandModal";
 import LandDetailsModal from "./Modals/LandDetailsModal";
 import SearchBox from "./SearchBox";
 import ToolBox from "./ToolBox";
+import SaveMapCenterButton from "./SaveMapCenterButton";
 import { landTypeColor } from "../utils/helper";
-import FilterPanel from './FilterPanel';
+import FilterPanel from "./FilterPanel";
+import { toast } from "react-toastify";
 
-const MapCenterUpdater = ({ mapCenter }) => {
+const MapCenterUpdater = ({
+  mapCenter,
+  mapZoom,
+  setCurrentMapCoordinates,
+  setCurrentMapZoom,
+}) => {
   const map = useMap();
   useEffect(() => {
     if (mapCenter) {
-      map.setView(mapCenter, map.getZoom(), { animate: true });
+      map.setView(mapCenter, mapZoom, { animate: true });
     }
-  }, [map, mapCenter]);
+  }, [map, mapCenter, mapZoom]);
+
+  // Update currentMapCoordinates whenever the map moves
+  useEffect(() => {
+    const handleMoveEnd = () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      setCurrentMapCoordinates([center.lat, center.lng]);
+      setCurrentMapZoom(zoom);
+    };
+    map.on("moveend", handleMoveEnd);
+    return () => {
+      map.off("moveend", handleMoveEnd); // Clean up the event listener
+    };
+  }, [map, setCurrentMapCoordinates, setCurrentMapZoom]);
+
   return null;
 };
 
@@ -32,9 +54,29 @@ const MapView = () => {
   const [isCreatingLand, setIsCreatingLand] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [toolboxOpen, setToolboxOpen] = useState(false);
+
+  // Default map center
   const [mapCenter, setMapCenter] = useState([
     22.94275737438829, 89.18402516392086,
   ]);
+  const [currentMapCoordinates, setCurrentMapCoordinates] = useState(mapCenter);
+
+  // Default map zoom
+  const [mapZoom, setMapZoom] = useState(18);
+  const [currentMapZoom, setCurrentMapZoom] = useState(mapZoom);
+
+  // Set the initial center and zoom from local storage, if available;
+  useEffect(() => {
+    const websiteData = JSON.parse(localStorage.getItem("landVistaData")) || {};
+    const savedMapCenter = websiteData.map_center;
+    const savedMapZoom = websiteData.map_zoom;
+
+    if (savedMapCenter && savedMapZoom) {
+      setMapCenter(savedMapCenter);
+      setMapZoom(savedMapZoom);
+    }
+  }, []);
+
   const [filter, setFilter] = useState({
     type: [],
     availabilityStatus: [],
@@ -83,8 +125,6 @@ const MapView = () => {
   };
 
   const handleLandCreationSave = (formData) => {
-    console.log("formData:", formData);
-
     // Append the coordinates array as a JSON string to FormData
     formData.append("coordinates", JSON.stringify(clickedPositions));
 
@@ -105,6 +145,7 @@ const MapView = () => {
         setClickedPositions([]); // Reset clicked positions
         setToolboxOpen(false);
         setIsCreatingLand(false);
+        toast.success("Location mark saved.");
       })
       .catch((error) => {
         console.error("Error saving land", error);
@@ -137,7 +178,7 @@ const MapView = () => {
       } else {
         map.getContainer().style.cursor = "";
       }
-    }, [map, isCreatingLand]);
+    }, [map]);
     return null;
   };
 
@@ -145,10 +186,14 @@ const MapView = () => {
     <>
       <MapContainer
         center={mapCenter}
-        zoom={18}
+        zoom={mapZoom}
         style={{ height: "95vh", width: "100%" }}
       >
-        <FilterPanel filter={filter} setFilter={setFilter} onApplyFilter={handleApplyFilter} />
+        <FilterPanel
+          filter={filter}
+          setFilter={setFilter}
+          onApplyFilter={handleApplyFilter}
+        />
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           maxZoom={19}
@@ -172,10 +217,19 @@ const MapView = () => {
         )}
 
         <LocationMarker />
-        <MapCenterUpdater mapCenter={mapCenter} />
+        <MapCenterUpdater
+          mapCenter={mapCenter}
+          mapZoom={mapZoom}
+          setCurrentMapCoordinates={setCurrentMapCoordinates}
+          setCurrentMapZoom={setCurrentMapZoom}
+        />
         <MapCursorUpdater />
 
         <SearchBox onSearchResultClick={handleSearchResultClick} />
+        <SaveMapCenterButton
+          mapCenter={currentMapCoordinates}
+          currentMapZoom={currentMapZoom}
+        />
         <ToolBox
           toolboxOpen={toolboxOpen}
           clickedPositions={clickedPositions}

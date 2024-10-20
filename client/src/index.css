@@ -58,10 +58,25 @@ code {
   gap: 10px; /* Ensure gap is defined properly */
 }
 
+.saveMapCenterButton {
+  position: fixed;
+  top: 40%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* Correct box-shadow */
+  padding: 10px; /* Use px for padding */
+  border-radius: 8px; /* Use px or any other unit */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Ensure gap is defined properly */
+
+}
+
 .filterPanel {
   position: fixed;
   top: 30%;
-  left: 5px;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
@@ -79,6 +94,7 @@ code {
 
 .filterPanel.expanded {
   transform: translateX(0); /* Show panel when expanded */
+  left: 5px;
 }
 
 .MuiFormControl-root .MuiSlider-root {

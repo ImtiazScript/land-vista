@@ -1,6 +1,6 @@
-# Real Estate Map Application
+# Land Vista
 
-Welcome to the Real Estate Map Application! This application allows users to browse lands and view details on an interactive map.
+Welcome to the Land Vista! This application allows users to browse lands and view details on an interactive map.
 
 ## Features
 

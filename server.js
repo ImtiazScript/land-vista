@@ -34,9 +34,16 @@ const landSchema = new mongoose.Schema({
   availabilityStatus: { type: String, enum: ['For Sale', 'For Rent', 'Sold', 'Leased', 'Auction'] },
   ownershipType: { type: String, enum: ['Private', 'Government', 'Common'] },
   coordinates: [[Number]],
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 const Land = mongoose.model('Land', landSchema);
+
+const userSchema = new mongoose.Schema({
+  createdAt: { type: Date, default: Date.now },
+});
+
+const User = mongoose.model('User', userSchema);
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -49,11 +56,18 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Route to get all lands
-// app.get('/api/lands', async (req, res) => {
-//   const lands = await Land.find();
-//   res.json(lands);
-// });
+app.post('/api/createUser', async (req, res) => {
+  const newUser = new User();
+  
+  try {
+    await newUser.save();
+    res.json({ user_id: newUser._id });
+  } catch (err) {
+    console.error('Error creating user', err);
+    res.status(500).send('Error creating user');
+  }
+});
+
 
 // Route to get lands with optional filters
 app.get('/api/lands', async (req, res) => {
@@ -119,12 +133,15 @@ app.post('/api/lands', upload.single('image'), async (req, res) => {
     type: req.body.type,
     availabilityStatus: req.body.availabilityStatus,
     ownershipType: req.body.ownershipType,
-    coordinates: JSON.parse(req.body.coordinates)
+    coordinates: JSON.parse(req.body.coordinates),
+    userId: req.body.user_id,
   });
 
-  await newLand.save()
+  const result = await newLand.save()
     .then(() => console.log('Land created'))
     .catch(err => console.error('Error saving land', err));
+
+    console.log('--- result:', result);
 
   res.json(newLand);
 });

@@ -20,7 +20,21 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
     setImage(e.target.files[0]); // Store the file object
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    // Step 1: Check browser storage for user_id
+    const websiteData = JSON.parse(localStorage.getItem('landVistaData')) || {};
+    let userId = websiteData.user_id;
+
+    // Step 2: If user_id not found, create a new user
+    if (!userId) {
+      const response = await fetch('/api/createUser', { method: 'POST' });
+      const data = await response.json();
+      userId = data.user_id;
+
+      // Step 3: Save the new user_id in browser storage
+      websiteData.user_id = userId;
+      localStorage.setItem('landVistaData', JSON.stringify(websiteData));
+    }
     const formData = new FormData();
     formData.append('name', newLandData.name);
     formData.append('description', newLandData.description);
@@ -28,6 +42,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
     formData.append('type', newLandData.type);
     formData.append('availabilityStatus', newLandData.availabilityStatus);
     formData.append('ownershipType', newLandData.ownershipType);
+    formData.append('user_id', userId);
     if (image) formData.append('image', image); // Append the image file
 
     handleSaveLand(formData); // Pass FormData to the parent
