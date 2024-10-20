@@ -60,12 +60,12 @@ code {
 
 .filterPanel {
   position: fixed;
-  top: 50%;
-  left: 0;
+  top: 30%;
+  left: 5px;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  padding: 10px;
+  padding: 8px;
   border-radius: 5px;
   z-index: 1000;
   width: 300px;
@@ -79,6 +79,11 @@ code {
 
 .filterPanel.expanded {
   transform: translateX(0); /* Show panel when expanded */
+}
+
+.MuiFormControl-root .MuiSlider-root {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filterExpandButton {
@@ -100,11 +105,12 @@ code {
   /* Ensure gap is defined properly */
 }
 
-.filterCollapseButton {
+.filterCollapsButton {
   background-color: #ffffff !important;  /* White background */
   border-radius: 50% !important;       /* Circular shape */
   padding: 8px !important;             /* Increased padding for better size */
   transition: background-color 0.3s ease !important; /* Smooth transition for hover effect */
+  margin-left: 140px !important;
 }
 
 /* For screens smaller than 600px (mobile view) */

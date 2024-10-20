@@ -8,10 +8,10 @@ import {
   Button,
   IconButton,
   Box,
+  Tooltip,
 } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material"; // Import icons
+import { FilterAlt, KeyboardDoubleArrowLeft } from "@mui/icons-material"; // Import icons
 import { useState } from "react";
-// import "./FilterPanel.css"; // Add the CSS for sliding animation
 
 const FilterPanel = ({ filter, setFilter, onApplyFilter }) => {
   const [expanded, setExpanded] = useState(false);
@@ -39,25 +39,33 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter }) => {
     <>
       {!expanded && (
         <Box className="filterExpandButton">
-          <IconButton
-            onClick={() => setExpanded(!expanded)}
-            className="icon-button-style"
-          >
-            {expanded ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
+          <Tooltip title="Filters" placement="right">
+            <span>
+              <IconButton
+                onClick={() => setExpanded(!expanded)}
+                className="icon-button-style"
+              >
+                <FilterAlt />
+              </IconButton>
+            </span>
+          </Tooltip>
         </Box>
       )}
 
       <div className={`filterPanel ${expanded ? "expanded" : "collapsed"}`}>
         <Collapse in={expanded} orientation="horizontal">
-        <FormControl margin="normal">
-            <IconButton
-              onClick={() => setExpanded(!expanded)}
-              className="filterCollapsButton"
-            >
-              <ChevronLeft />
-            </IconButton>
-            </FormControl>
+          <FormControl margin="normal">
+            <Tooltip title="Hide filters" placement="right">
+              <span>
+                <IconButton
+                  onClick={() => setExpanded(!expanded)}
+                  className="filterCollapsButton"
+                >
+                  <KeyboardDoubleArrowLeft />
+                </IconButton>
+              </span>
+            </Tooltip>
+          </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel>Type</InputLabel>
             <Select
@@ -110,11 +118,14 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter }) => {
             <Slider
               value={filter.areaRange}
               min={500}
-              max={1000}
+              max={2000}
               step={100}
-              valueLabelDisplay="auto"
+              valueLabelDisplay="on"
               onChange={handleAreaChange}
               valueLabelFormat={(value) => `${value} m`}
+              sx={{
+                width: "80%", // Adjust the slider width to give space for the value label
+              }}
             />
           </FormControl>
 

@@ -1,10 +1,10 @@
 import React from 'react';
-const SearchPage = () => {
+const AboutPage = () => {
   return (
     <div>
-      <h2>Search Page</h2>
+      <h2>About this tool</h2>
       {/* Add search functionality here */}
     </div>
   );
 };
-export default SearchPage;
+export default AboutPage;

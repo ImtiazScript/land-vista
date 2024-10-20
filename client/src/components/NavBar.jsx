@@ -45,12 +45,12 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <NavLink to="/">
-              <Button color="inherit">Home</Button>
+              <Button color="inherit">Map View</Button>
             </NavLink>
-            <NavLink to="/search">
-              <Button color="inherit">Search</Button>
+            <NavLink to="/about">
+              <Button color="inherit">About</Button>
             </NavLink>
-            <Button color="inherit">Login</Button>
+            {/* <Button color="inherit">Login</Button> */}
           </Box>
         </Toolbar>
       </AppBar>
