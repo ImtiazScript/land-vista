@@ -227,14 +227,15 @@ const MapView = () => {
           minZoom={3}
         />
 
-        {lands.map((land) => (
-          <Polygon
-            key={land._id}
-            pathOptions={landTypeColor(land.type)}
-            positions={land.coordinates}
-            eventHandlers={{ click: () => setSelectedLand(land) }}
-          />
-        ))}
+        {(lands && lands.length) &&
+          lands.map((land) => (
+            <Polygon
+              key={land._id}
+              pathOptions={landTypeColor(land.type)}
+              positions={land.coordinates}
+              eventHandlers={{ click: () => setSelectedLand(land) }}
+            />
+          ))}
 
         {clickedPositions.length > 0 && (
           <Polygon
