@@ -227,7 +227,7 @@ const MapView = () => {
           minZoom={3}
         />
 
-        {(lands && lands.length) &&
+        {(lands && lands.length > 0) &&
           lands.map((land) => (
             <Polygon
               key={land._id}
