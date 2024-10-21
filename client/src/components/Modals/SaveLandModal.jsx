@@ -27,7 +27,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
 
     // Step 2: If user_id not found, create a new user
     if (!userId) {
-      const response = await fetch('/api/createUser', { method: 'POST' });
+      const response = await fetch('/api/users/create', { method: 'POST' });
       const data = await response.json();
       userId = data.user_id;
 
