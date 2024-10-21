@@ -11,7 +11,10 @@ const SaveMapCenterButton = ({ mapCenter, currentMapZoom }) => {
 
     // Step 2: If user_id not found, create a new user
     if (!userId) {
-      const response = await fetch("/api/createUser", { method: "POST" });
+      const response = await fetch(
+        // "/api/createUser",
+        "https://land-vista-z6rj.vercel.app/api/createUser",
+        { method: "POST" });
       const data = await response.json();
       websiteData.user_id = data.user_id;
     } else {
