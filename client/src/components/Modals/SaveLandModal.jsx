@@ -21,11 +21,11 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
   };
 
   const handleSave = async () => {
-    // Step 1: Check browser storage for user_id
+    // Check browser storage for user_id
     const websiteData = JSON.parse(localStorage.getItem('landVistaData')) || {};
     let userId = websiteData.user_id;
 
-    // Step 2: If user_id not found, create a new user
+    // Create a new user if user_id not found
     if (!userId) {
       const response = await fetch(
         // '/api/users/create',
@@ -34,7 +34,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
       const data = await response.json();
       userId = data.user_id;
 
-      // Step 3: Save the new user_id in browser storage
+      // Save the new user_id in browser storage
       websiteData.user_id = userId;
       localStorage.setItem('landVistaData', JSON.stringify(websiteData));
     }
@@ -50,6 +50,9 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
 
     handleSaveLand(formData); // Pass FormData to the parent
   };
+
+  // Check if the app is running on Vercel
+  const isVercel = process.env.VERCEL_ENV !== undefined;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -142,30 +145,37 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth margin="normal">
-          <Button
-            variant="outlined"
-            component="label"
-            sx={{
-              marginTop: "7px",
-              fontSize: "16px",
-              width: "100%",
-            }}
-          >
-            Choose Photo
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              hidden
-            />
-          </Button>
-          {image && (
-            <Typography variant="body2" sx={{ marginTop: "8px" }}>
-              {image.name}
-            </Typography>
-          )}
-        </FormControl>
+        {/* Photo Upload */}
+        {isVercel ? (
+          <Typography variant="body2" color="error" sx={{ marginTop: "8px" }}>
+            Note: Photo uploading is not available on Vercel.
+          </Typography>
+        ) : (
+          <FormControl fullWidth margin="normal">
+            <Button
+              variant="outlined"
+              component="label"
+              sx={{
+                marginTop: "7px",
+                fontSize: "16px",
+                width: "100%",
+              }}
+            >
+              Choose Photo
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                hidden
+              />
+            </Button>
+            {image && (
+              <Typography variant="body2" sx={{ marginTop: "8px" }}>
+                {image.name}
+              </Typography>
+            )}
+          </FormControl>
+        )}
 
         {/* Save Button Aligned to the Right */}
         <Box
