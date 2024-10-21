@@ -3,9 +3,18 @@ const connectDB = require('./config/db');
 const landRoutes = require('./routes/landRoutes');
 const userRoutes = require('./routes/userRoutes');
 const path = require('path');
+const cors = require('cors');
 
 // Initialize express app
 const app = express();
+
+// Allow only specific origin (more secure)
+const corsOptions = {
+  origin: 'https://land-vista.vercel.app',  // Replace with your frontend URL
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // Middleware to parse JSON
 app.use(express.json());
