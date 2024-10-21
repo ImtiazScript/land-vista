@@ -227,15 +227,23 @@ const MapView = () => {
           minZoom={3}
         />
 
-        {(lands && lands.length > 0) &&
-          lands.map((land) => (
-            <Polygon
-              key={land._id}
-              pathOptions={landTypeColor(land.type)}
-              positions={land.coordinates}
-              eventHandlers={{ click: () => setSelectedLand(land) }}
-            />
-          ))}
+        {Array.isArray(lands) &&
+          lands.length > 0 &&
+          lands.map((land) => {
+            // Check if coordinates exist and are an array
+            if (land.coordinates && Array.isArray(land.coordinates)) {
+              return (
+                <Polygon
+                  key={land._id}
+                  pathOptions={landTypeColor(land.type)}
+                  positions={land.coordinates}
+                  eventHandlers={{ click: () => setSelectedLand(land) }}
+                />
+              );
+            }
+            // Return null if coordinates are not valid
+            return null;
+          })}
 
         {clickedPositions.length > 0 && (
           <Polygon
