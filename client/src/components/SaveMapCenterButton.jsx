@@ -13,7 +13,7 @@ const SaveMapCenterButton = ({ mapCenter, currentMapZoom }) => {
     if (!userId) {
       const response = await fetch(
         // "/api/createUser",
-        "https://land-vista-z6rj.vercel.app/api/createUser",
+        "https://api-land-vista.vercel.app/api/createUser",
         { method: "POST" });
       const data = await response.json();
       websiteData.user_id = data.user_id;
