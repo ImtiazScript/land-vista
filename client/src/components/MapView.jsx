@@ -145,7 +145,7 @@ const MapView = () => {
       .post(
         // "/api/lands",
         "https://api-land-vista.vercel.app/api/lands",
-        { ...formData, currentMapCoordinates },
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
