@@ -5,6 +5,11 @@ exports.createLand = async (req, res) => {
   try {
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
+    if (!req.body.coordinates) {
+      throw new Error('Coordinates are missing');
+    }
+    const coordinates = JSON.parse(req.body.coordinates);
+
     const newLand = new Land({
       name: req.body.name,
       description: req.body.description,
@@ -13,7 +18,7 @@ exports.createLand = async (req, res) => {
       type: req.body.type,
       availabilityStatus: req.body.availabilityStatus,
       ownershipType: req.body.ownershipType,
-      coordinates: JSON.parse(req.body.coordinates),
+      coordinates,
       userId: req.body.user_id,
     });
 
