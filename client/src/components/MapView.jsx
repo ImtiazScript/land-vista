@@ -16,6 +16,7 @@ import SaveMapCenterButton from "./SaveMapCenterButton";
 import { landTypeColor } from "../utils/helper";
 import FilterPanel from "./FilterPanel";
 import { toast } from "react-toastify";
+import MapDragToggle from "./MapDragToggle";
 
 const MapCenterUpdater = ({
   mapCenter,
@@ -87,17 +88,23 @@ const MapView = () => {
 
   useEffect(() => {
     axios
-      .get("/api/lands", { params: appliedFilter })
+      .get("/api/lands", {
+        params: { ...appliedFilter, center: currentMapCoordinates },
+      })
       .then((response) => {
         setLands(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the lands!", error);
       });
-  }, [appliedFilter]);
+  }, [appliedFilter, currentMapCoordinates]);
 
   const handleApplyFilter = (newFilter) => {
-    setAppliedFilter(newFilter); // Update filter state and trigger the API call
+    setAppliedFilter(newFilter);
+  };
+
+  const handleClearFilter = () => {
+    setAppliedFilter();
   };
 
   // Search
@@ -134,11 +141,15 @@ const MapView = () => {
     }
 
     axios
-      .post("/api/lands", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        "/api/lands",
+        { ...formData, currentMapCoordinates },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         setLands([...lands, response.data]);
         setShowSaveModal(false);
@@ -189,11 +200,27 @@ const MapView = () => {
         zoom={mapZoom}
         style={{ height: "95vh", width: "100%" }}
       >
-        <FilterPanel
-          filter={filter}
-          setFilter={setFilter}
-          onApplyFilter={handleApplyFilter}
-        />
+        <MapDragToggle>
+          {({ disableDragging, enableDragging }) => (
+            <div // Wrapping FilterPanel in a div
+              onMouseOver={() => {
+                disableDragging();
+              }}
+              onMouseOut={() => {
+                enableDragging();
+              }}
+              style={{ display: "inline-block" }} // Ensure it registers mouse events
+            >
+              <FilterPanel
+                filter={filter}
+                setFilter={setFilter}
+                onApplyFilter={handleApplyFilter}
+                onClearFilter={handleClearFilter}
+              />
+            </div>
+          )}
+        </MapDragToggle>
+
         <TileLayer
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
           maxZoom={19}

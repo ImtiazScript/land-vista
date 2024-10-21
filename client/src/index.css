@@ -129,6 +129,17 @@ code {
   margin-left: 140px !important;
 }
 
+.filterButtons {
+  display: flex;
+  justify-content: center; /* Ensures even spacing between buttons */
+  gap: 8px; /* Optional: Add space between the buttons */
+}
+
+.filterButtons button {
+  flex: 1; /* Makes the buttons take up equal space */
+  max-width: 45%; /* Adjust this to prevent the buttons from taking up too much space */
+}
+
 /* For screens smaller than 600px (mobile view) */
 @media (max-width: 600px) {
   .icon-button-style {

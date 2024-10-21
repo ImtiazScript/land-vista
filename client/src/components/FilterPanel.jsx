@@ -13,7 +13,7 @@ import {
 import { FilterAlt, KeyboardDoubleArrowLeft } from "@mui/icons-material"; // Import icons
 import { useState } from "react";
 
-const FilterPanel = ({ filter, setFilter, onApplyFilter }) => {
+const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleTypeChange = (event) => {
@@ -129,13 +129,22 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter }) => {
             />
           </FormControl>
 
-          <Button
-            onClick={() => onApplyFilter(filter)}
-            variant="contained"
-            fullWidth
-          >
-            Apply Filters
-          </Button>
+          <div className="filterButtons">
+            <Button
+              onClick={() => onClearFilter()}
+              variant="outlined"
+              fullWidth
+            >
+              Clear
+            </Button>
+            <Button
+              onClick={() => onApplyFilter(filter)}
+              variant="contained"
+              fullWidth
+            >
+              Filter
+            </Button>
+          </div>
         </Collapse>
       </div>
     </>

@@ -31,24 +31,46 @@ exports.getLands = async (req, res) => {
     const { type, availabilityStatus, ownershipType, areaRange, center } = req.query;
     const filter = {};
 
-    if (type) filter.type = { $in: type.split(',') };
-    if (availabilityStatus) filter.availabilityStatus = { $in: availabilityStatus.split(',') };
-    if (ownershipType) filter.ownershipType = { $in: ownershipType.split(',') };
+    // Check if type is an array, if so use it directly. Otherwise, split by comma if it's a string.
+    if (type && Array.isArray(type)) {
+      filter.type = { $in: type };
+    } else if (type) {
+      filter.type = { $in: type.split(",") };
+    }
 
-    if (areaRange && center) {
-      const centerCoords = JSON.parse(center);
-      const radius = parseInt(areaRange, 10);
+    // Handle availabilityStatus filter similarly.
+    if (availabilityStatus && Array.isArray(availabilityStatus)) {
+      filter.availabilityStatus = { $in: availabilityStatus };
+    } else if (availabilityStatus) {
+      filter.availabilityStatus = { $in: availabilityStatus.split(",") };
+    }
+
+    // Handle ownershipType filter similarly.
+    if (ownershipType && Array.isArray(ownershipType)) {
+      filter.ownershipType = { $in: ownershipType };
+    } else if (ownershipType) {
+      filter.ownershipType = { $in: ownershipType.split(",") };
+    }
+
+    // Get lands within the specified area range (500m or 1000m) of map center
+    const mapCenter = center ? center : [22.94275737438829, 89.18402516392086];
+
+    if (areaRange) {
+      // Convert areaRange from meters to radians
+      const radiusInMeters = parseInt(areaRange, 10);
+      const radiusInRadians = radiusInMeters / 6378137; // Earth's radius in meters
+    
       filter.coordinates = {
         $geoWithin: {
-          $centerSphere: [centerCoords, radius / 3963.2],
+          $centerSphere: [mapCenter, radiusInRadians], // Radius in radians
         },
       };
     }
 
-    const lands = await Land.find(filter);
-    res.status(200).json(lands);
+    const lands = await Land.find(filter).exec();
+    res.json(lands);
   } catch (error) {
-    console.error('Error fetching lands:', error);
-    res.status(500).send('Error fetching lands');
+    console.error("Error fetching lands", error);
+    res.status(500).send("Error fetching lands");
   }
 };
