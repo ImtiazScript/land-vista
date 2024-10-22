@@ -111,9 +111,12 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
             onChange={handleInputChange}
           >
             <MenuItem value="For Sale">For Sale</MenuItem>
-            <MenuItem value="For Rent">For Rent</MenuItem>
             <MenuItem value="Sold">Sold</MenuItem>
+            <MenuItem value="For Rent">For Rent</MenuItem>
+            <MenuItem value="Rented">Rented</MenuItem>
+            <MenuItem value="For Lease">For Lease</MenuItem>
             <MenuItem value="Leased">Leased</MenuItem>
+            <MenuItem value="Not Available">Not Available</MenuItem>
             <MenuItem value="Auction">Auction</MenuItem>
           </Select>
         </FormControl>

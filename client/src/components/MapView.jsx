@@ -13,7 +13,7 @@ import LandDetailsModal from "./Modals/LandDetailsModal";
 import SearchBox from "./SearchBox";
 import ToolBox from "./ToolBox";
 import SaveMapCenterButton from "./SaveMapCenterButton";
-import { landTypeColor } from "../utils/helper";
+import { landAvailabilityStatusColor } from "../utils/helper";
 import FilterPanel from "./FilterPanel";
 import { toast } from "react-toastify";
 import MapDragToggle from "./MapDragToggle";
@@ -230,7 +230,7 @@ const MapView = () => {
               return (
                 <Polygon
                   key={land._id}
-                  pathOptions={landTypeColor(land.type)}
+                  pathOptions={landAvailabilityStatusColor(land.availabilityStatus)}
                   positions={land.coordinates}
                   eventHandlers={{ click: () => setSelectedLand(land) }}
                 />
