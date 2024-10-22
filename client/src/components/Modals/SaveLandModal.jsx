@@ -52,7 +52,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
   };
 
   // Check if the app is running on Vercel
-  const isVercel = process.env.VERCEL_ENV !== undefined;
+  const isVercel = process.env.REACT_APP_VERCEL_ENV  !== undefined;
 
   return (
     <Modal open={open} onClose={onClose}>
