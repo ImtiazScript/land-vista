@@ -6,7 +6,7 @@ const landSchema = new mongoose.Schema({
   imageUrl: String,
   price: Number,
   type: { type: String, enum: ['Residential', 'Commercial', 'Farming', 'Fish Farm'] },
-  availabilityStatus: { type: String, enum: ['For Sale', 'For Rent', 'Sold', 'Leased', 'Auction'] },
+  availabilityStatus: { type: String, enum: ['For Sale', 'Sold', 'For Rent', 'Rented', 'For Lease', 'Leased', 'Not Available', 'Auction'] },
   ownershipType: { type: String, enum: ['Private', 'Government', 'Common'] },
   coordinates: [[Number]],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

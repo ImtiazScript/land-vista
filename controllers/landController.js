@@ -62,7 +62,7 @@ exports.getLands = async (req, res) => {
     }
 
     // Get lands within the specified area range (1000m or 10000m) of map center
-    const [lat, lng] = center || [22.94275737438829, 89.18402516392086];
+    const [lat, lng] = center || [23.843898583121252, 90.50869166851045];
     const mapCenter = [lng, lat]; // MongoDB expects [longitude, latitude]
 
     if (areaRange) {
