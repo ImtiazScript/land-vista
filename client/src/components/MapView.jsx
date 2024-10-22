@@ -134,14 +134,7 @@ const MapView = () => {
   };
 
   const handleLandCreationSave = (formData) => {
-    // Append the coordinates array as a JSON string to FormData
     formData.append("coordinates", JSON.stringify(clickedPositions));
-
-    // Log the formData to verify that coordinates are correctly appended
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     axios
       .post(
         `${process.env.REACT_APP_API_BASE_URL}/lands`,
