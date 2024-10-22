@@ -6,6 +6,7 @@ import {
   Polygon,
   useMapEvents,
   useMap,
+  LayersControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import SaveLandModal from "./Modals/SaveLandModal";
@@ -17,6 +18,8 @@ import { landAvailabilityStatusColor } from "../utils/helper";
 import FilterPanel from "./FilterPanel";
 import { toast } from "react-toastify";
 import MapDragToggle from "./MapDragToggle";
+
+const { BaseLayer } = LayersControl;
 
 const MapCenterUpdater = ({
   mapCenter,
@@ -214,11 +217,36 @@ const MapView = () => {
           )}
         </MapDragToggle>
 
-        <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-          maxZoom={19}
-          minZoom={3}
-        />
+        <LayersControl position="bottomright">
+          <BaseLayer checked name="Street View">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+              minZoom={3}
+            />
+          </BaseLayer>
+          <BaseLayer name="Satellite View">
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={19}
+              minZoom={3}
+            />
+          </BaseLayer>
+          <BaseLayer name="Terrain View">
+            <TileLayer
+              url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+              maxZoom={17}
+              minZoom={3}
+            />
+          </BaseLayer>
+        <BaseLayer name="ESRI Street View">
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+            maxZoom={19}
+            minZoom={3}
+          />
+        </BaseLayer>
+        </LayersControl>
 
         {Array.isArray(lands) &&
           lands.length > 0 &&
