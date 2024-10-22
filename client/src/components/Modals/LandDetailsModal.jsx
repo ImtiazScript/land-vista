@@ -1,6 +1,18 @@
-import React from 'react';
-import { Modal, Box, Typography, Button, Grid, IconButton } from '@mui/material';
-import { Close as CloseIcon, AttachMoney as PriceIcon, Home as OwnershipIcon, CheckCircle as StatusIcon } from '@mui/icons-material';
+import React from "react";
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Grid,
+  IconButton,
+} from "@mui/material";
+import {
+  Close as CloseIcon,
+  AttachMoney as PriceIcon,
+  Home as OwnershipIcon,
+  CheckCircle as StatusIcon,
+} from "@mui/icons-material";
 
 const LandDetailsModal = ({ open, onClose, land }) => {
   return (
@@ -51,14 +63,10 @@ const LandDetailsModal = ({ open, onClose, land }) => {
             sm={6}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <StatusIcon
-              sx={{
-                mr: 1,
-                color:
-                  land?.availabilityStatus === "For Rent" ? "blue" : "green",
-              }}
-            />
-            <Typography variant="body1">{land?.availabilityStatus}</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              Status:{" "}
+            </Typography>
+            <Typography variant="body1" sx={{ ml: 1 }}>{land?.availabilityStatus}</Typography>
           </Grid>
 
           {/* Price (Display if for sale) */}
@@ -70,8 +78,10 @@ const LandDetailsModal = ({ open, onClose, land }) => {
               sm={6}
               sx={{ display: "flex", alignItems: "center" }}
             >
-              <PriceIcon sx={{ mr: 1, color: "green" }} />
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              {land?.availabilityStatus === "For Sale" ? 'Price: ' : 'Monthly Rent: ' }
+              </Typography>
+              <Typography variant="body1"  sx={{ ml: 1 }}>
                 ${land?.price?.toLocaleString()}
               </Typography>
             </Grid>
@@ -84,8 +94,10 @@ const LandDetailsModal = ({ open, onClose, land }) => {
             sm={6}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <OwnershipIcon sx={{ mr: 1 }} />
-            <Typography variant="body1">{land?.ownershipType}</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              Ownership:{" "}
+            </Typography>
+            <Typography variant="body1"  sx={{ ml: 1 }}>{land?.ownershipType}</Typography>
           </Grid>
 
           {/* Land Type */}
@@ -106,8 +118,8 @@ const LandDetailsModal = ({ open, onClose, land }) => {
 
         {/* Description */}
         <Box sx={{ mt: 3 }}>
-          <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold" }}>
-            Description
+          <Typography variant="body1" sx={{fontWeight: "bold" }}>
+            Description:
           </Typography>
           <Typography variant="body2">
             {land?.description || "No description available"}
