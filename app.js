@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const connectDB = require('./config/db');
 const landRoutes = require('./routes/landRoutes');
@@ -10,7 +12,7 @@ const app = express();
 
 // Allow only specific origin (more secure)
 const corsOptions = {
-  origin: 'https://land-vista.vercel.app',  // Replace with your frontend URL
+  origin: process.env.FRONT_END_BASE_URL,
   optionsSuccessStatus: 200,
 };
 

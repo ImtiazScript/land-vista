@@ -88,8 +88,9 @@ const MapView = () => {
 
   useEffect(() => {
     axios
-      // .get("/api/lands", {
-      .get("https://api-land-vista.vercel.app/api/lands", {
+      .get(
+        `${process.env.REACT_APP_API_BASE_URL}/lands`,
+        {
         params: { ...appliedFilter, center: currentMapCoordinates },
       })
       .then((response) => {
@@ -143,8 +144,7 @@ const MapView = () => {
 
     axios
       .post(
-        // "/api/lands",
-        "https://api-land-vista.vercel.app/api/lands",
+        `${process.env.REACT_APP_API_BASE_URL}/lands`,
         formData,
         {
           headers: {

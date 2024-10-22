@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const mongoDbUri = 'mongodb+srv://emtiaj2011:Uj2QRYOGpzqDhI6g@real-estate.corei.mongodb.net/?retryWrites=true&w=majority&appName=real-estate';
   try {
-    // await mongoose.connect('mongodb://localhost:27017/real-estate', {
-    await mongoose.connect(mongoDbUri, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

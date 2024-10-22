@@ -28,8 +28,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
     // Create a new user if user_id not found
     if (!userId) {
       const response = await fetch(
-        // '/api/users/create',
-        'https://api-land-vista.vercel.app/api/users/create',
+        `${process.env.REACT_APP_API_BASE_URL}/users/create`,
         { method: 'POST' });
       const data = await response.json();
       userId = data.user_id;
@@ -50,9 +49,6 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
 
     handleSaveLand(formData); // Pass FormData to the parent
   };
-
-  // Check if the app is running on Vercel
-  const isVercel = process.env.REACT_APP_VERCEL_ENV  !== undefined;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -146,7 +142,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
         </FormControl>
 
         {/* Photo Upload */}
-        {isVercel ? (
+        {process.env.REACT_APP_VERCEL_ENV  !== undefined ? (
           <Typography variant="body2" color="error" sx={{ marginTop: "8px" }}>
             Note: Photo uploading is not available on Vercel.
           </Typography>
