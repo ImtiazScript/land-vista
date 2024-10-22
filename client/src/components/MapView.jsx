@@ -9,6 +9,7 @@ import {
   LayersControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.gridlayer.googlemutant";
 import SaveLandModal from "./Modals/SaveLandModal";
 import LandDetailsModal from "./Modals/LandDetailsModal";
 import SearchBox from "./SearchBox";
@@ -218,28 +219,59 @@ const MapView = () => {
         </MapDragToggle>
 
         <LayersControl position="bottomright">
-          <BaseLayer checked name="Street View">
+        <BaseLayer checked name="Google Roads">
+          <TileLayer
+            url="https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+            maxZoom={19}
+            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+          />
+        </BaseLayer>
+
+        {/* Google Maps Satellite */}
+        <BaseLayer name="Google Satellite">
+          <TileLayer
+            url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+            maxZoom={19}
+            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+          />
+        </BaseLayer>
+
+        {/* Google Maps Hybrid */}
+        <BaseLayer name="Google Hybrid">
+          <TileLayer
+            url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+            maxZoom={19}
+            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+          />
+        </BaseLayer>
+
+        {/* Google Maps Terrain */}
+        <BaseLayer name="Google Terrain">
+          <TileLayer
+            url="https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
+            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+            maxZoom={19}
+            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+          />
+        </BaseLayer>
+          <BaseLayer name="Openstreet Street View">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom={19}
               minZoom={3}
             />
           </BaseLayer>
-          <BaseLayer name="Satellite View">
+          <BaseLayer name="ArcGIS Satellite View">
             <TileLayer
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               maxZoom={19}
               minZoom={3}
             />
           </BaseLayer>
-          <BaseLayer name="Terrain View">
-            <TileLayer
-              url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-              maxZoom={17}
-              minZoom={3}
-            />
-          </BaseLayer>
-        <BaseLayer name="ESRI Street View">
+        <BaseLayer name="ArcGIS Street View">
           <TileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
             maxZoom={19}
