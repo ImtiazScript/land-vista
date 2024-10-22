@@ -36,7 +36,7 @@ const MapCenterUpdater = ({
     const handleMoveEnd = () => {
       const center = map.getCenter();
       const zoom = map.getZoom();
-      setCurrentMapCoordinates([center.lng, center.lat]);
+      setCurrentMapCoordinates([center.lat, center.lng]);
       setCurrentMapZoom(zoom);
     };
     map.on("moveend", handleMoveEnd);
@@ -82,7 +82,7 @@ const MapView = () => {
     type: [],
     availabilityStatus: [],
     ownershipType: [],
-    areaRange: 500, // Default range
+    areaRange: 1000, // Default range
   });
   const [appliedFilter, setAppliedFilter] = useState(filter);
 

@@ -66,7 +66,7 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
       >
         <Typography variant="h6">Enter Land Details</Typography>
         <TextField
-          label="Name"
+          label="Title"
           fullWidth
           margin="normal"
           name="name"
@@ -80,6 +80,9 @@ const SaveLandModal = ({ open, onClose, handleSaveLand }) => {
           name="description"
           value={newLandData.description}
           onChange={handleInputChange}
+          multiline
+          rows={4}
+          variant="outlined"
         />
 
         {/* Type Dropdown */}

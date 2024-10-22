@@ -117,8 +117,8 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
           <FormControl fullWidth margin="normal">
             <Slider
               value={filter.areaRange}
-              min={500}
-              max={2000}
+              min={1000}
+              max={10000}
               step={100}
               valueLabelDisplay="on"
               onChange={handleAreaChange}

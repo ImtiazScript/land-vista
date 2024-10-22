@@ -9,6 +9,8 @@ exports.createLand = async (req, res) => {
       throw new Error('Coordinates are missing');
     }
     const coordinates = JSON.parse(req.body.coordinates);
+    // converting to [lng, lat] format to support mongodb's geospacial query
+    const rearrangedCoordinates = coordinates.map(coord => [coord[1], coord[0]]);
 
     const newLand = new Land({
       name: req.body.name,
@@ -18,11 +20,13 @@ exports.createLand = async (req, res) => {
       type: req.body.type,
       availabilityStatus: req.body.availabilityStatus,
       ownershipType: req.body.ownershipType,
-      coordinates,
+      coordinates: rearrangedCoordinates,
       userId: req.body.user_id,
     });
 
     const savedLand = await newLand.save();
+    // Convert coordinates  to support react-leaflet's polygon requirements
+    savedLand.coordinates = savedLand.coordinates.map(coord => [coord[1], coord[0]])
     res.status(201).json(savedLand);
   } catch (err) {
     console.error('Error creating land:', err);
@@ -57,8 +61,9 @@ exports.getLands = async (req, res) => {
       filter.ownershipType = { $in: ownershipType.split(",") };
     }
 
-    // Get lands within the specified area range (500m or 1000m) of map center
-    const mapCenter = center ? center : [22.94275737438829, 89.18402516392086];
+    // Get lands within the specified area range (1000m or 10000m) of map center
+    const [lat, lng] = center || [22.94275737438829, 89.18402516392086];
+    const mapCenter = [lng, lat]; // MongoDB expects [longitude, latitude]
 
     if (areaRange) {
       // Convert areaRange from meters to radians
@@ -73,7 +78,16 @@ exports.getLands = async (req, res) => {
     }
 
     const lands = await Land.find(filter).exec();
-    res.json(lands);
+
+    // Convert coordinates for each land entry to support react-leaflet's polygon requirements
+    const formattedLands = lands.map(land => {
+      return {
+        ...land._doc, // Spread the existing land properties
+        coordinates: land.coordinates.map(coord => [coord[1], coord[0]]) // Convert from [lng, lat] to [lat, lng]
+      };
+    });
+
+    res.json(formattedLands);
   } catch (error) {
     console.error("Error fetching lands", error);
     res.status(500).send("Error fetching lands");
