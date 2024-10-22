@@ -10,7 +10,7 @@ const cors = require('cors');
 // Initialize express app
 const app = express();
 
-// Allow only specific origin (more secure)
+// Allow only specific origin
 const corsOptions = {
   origin: process.env.FRONT_END_BASE_URL,
   optionsSuccessStatus: 200,
