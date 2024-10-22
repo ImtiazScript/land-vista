@@ -57,9 +57,7 @@ const MapView = () => {
   const [toolboxOpen, setToolboxOpen] = useState(false);
 
   // Default map center
-  const [mapCenter, setMapCenter] = useState([
-    22.94275737438829, 89.18402516392086,
-  ]);
+  const [mapCenter, setMapCenter] = useState([23.843898583121252, 90.50869166851045]);
   const [currentMapCoordinates, setCurrentMapCoordinates] = useState(mapCenter);
 
   // Default map zoom
