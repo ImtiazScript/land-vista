@@ -61,24 +61,37 @@ const MapView = () => {
   const [toolboxOpen, setToolboxOpen] = useState(false);
 
   // Default map center
-  const [mapCenter, setMapCenter] = useState([23.843898583121252, 90.50869166851045]);
+  const [mapCenter, setMapCenter] = useState([
+    23.843898583121252, 90.50869166851045,
+  ]);
   const [currentMapCoordinates, setCurrentMapCoordinates] = useState(mapCenter);
 
   // Default map zoom
   const [mapZoom, setMapZoom] = useState(18);
   const [currentMapZoom, setCurrentMapZoom] = useState(mapZoom);
 
-  // Set the initial center and zoom from local storage, if available;
+  const [activeBaseLayer, setActiveBaseLayer] = useState();
+  // Set the initial center, zoom and layer from local storage, if available;
   useEffect(() => {
     const websiteData = JSON.parse(localStorage.getItem("landVistaData")) || {};
     const savedMapCenter = websiteData.map_center;
     const savedMapZoom = websiteData.map_zoom;
+    const savedBaseLayer = websiteData.activeBaseLayer;
 
     if (savedMapCenter && savedMapZoom) {
       setMapCenter(savedMapCenter);
       setMapZoom(savedMapZoom);
     }
+    if (savedBaseLayer) {
+      setActiveBaseLayer(savedBaseLayer);
+    } else {
+      setActiveBaseLayer("Google Roads");
+    }
   }, []);
+
+  const handleBaseLayerChange = (layerName) => {
+    setActiveBaseLayer(layerName);
+  };
 
   const [filter, setFilter] = useState({
     type: [],
@@ -90,9 +103,7 @@ const MapView = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `${process.env.REACT_APP_API_BASE_URL}/lands`,
-        {
+      .get(`${process.env.REACT_APP_API_BASE_URL}/lands`, {
         params: { ...appliedFilter, center: currentMapCoordinates },
       })
       .then((response) => {
@@ -138,15 +149,11 @@ const MapView = () => {
   const handleLandCreationSave = (formData) => {
     formData.append("coordinates", JSON.stringify(clickedPositions));
     axios
-      .post(
-        `${process.env.REACT_APP_API_BASE_URL}/lands`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .post(`${process.env.REACT_APP_API_BASE_URL}/lands`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setLands([...lands, response.data]);
         setShowSaveModal(false);
@@ -219,65 +226,114 @@ const MapView = () => {
         </MapDragToggle>
 
         <LayersControl position="bottomright">
-        <BaseLayer checked name="Google Roads">
-          <TileLayer
-            url="https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-            maxZoom={19}
-            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
-          />
-        </BaseLayer>
+          <BaseLayer
+            checked={activeBaseLayer === "Google Roads"}
+            name="Google Roads"
+          >
+            <TileLayer
+              url="https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+              name="Google Roads"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
+              subdomains={["mt0", "mt1", "mt2", "mt3"]}
+              maxZoom={19}
+              attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+            />
+          </BaseLayer>
 
-        {/* Google Maps Satellite */}
-        <BaseLayer name="Google Satellite">
-          <TileLayer
-            url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
-            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-            maxZoom={19}
-            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
-          />
-        </BaseLayer>
+          {/* Google Maps Satellite */}
+          <BaseLayer
+            checked={activeBaseLayer === "Google Satellite"}
+            name="Google Satellite"
+          >
+            <TileLayer
+              url="https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+              name="Google Satellite"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
+              subdomains={["mt0", "mt1", "mt2", "mt3"]}
+              maxZoom={19}
+              attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+            />
+          </BaseLayer>
 
-        {/* Google Maps Hybrid */}
-        <BaseLayer name="Google Hybrid">
-          <TileLayer
-            url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-            maxZoom={19}
-            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
-          />
-        </BaseLayer>
+          {/* Google Maps Hybrid */}
+          <BaseLayer
+            checked={activeBaseLayer === "Google Hybrid"}
+            name="Google Hybrid"
+          >
+            <TileLayer
+              url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+              name="Google Hybrid"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
+              subdomains={["mt0", "mt1", "mt2", "mt3"]}
+              maxZoom={19}
+              attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+            />
+          </BaseLayer>
 
-        {/* Google Maps Terrain */}
-        <BaseLayer name="Google Terrain">
-          <TileLayer
-            url="https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
-            subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-            maxZoom={19}
-            attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
-          />
-        </BaseLayer>
-          <BaseLayer name="Openstreet Street View">
+          {/* Google Maps Terrain */}
+          <BaseLayer
+            checked={activeBaseLayer === "Google Terrain"}
+            name="Google Terrain"
+          >
+            <TileLayer
+              url="https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
+              name="Google Terrain"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
+              subdomains={["mt0", "mt1", "mt2", "mt3"]}
+              maxZoom={19}
+              attribution='&copy; <a href="https://www.google.com/intl/en/help/terms_maps.html">Google</a>'
+            />
+          </BaseLayer>
+          <BaseLayer
+            checked={activeBaseLayer === "Openstreet Street View"}
+            name="Openstreet Street View"
+          >
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              name="Openstreet Street View"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
               maxZoom={19}
               minZoom={3}
             />
           </BaseLayer>
-          <BaseLayer name="ArcGIS Satellite View">
+          <BaseLayer
+            checked={activeBaseLayer === "ArcGIS Satellite View"}
+            name="ArcGIS Satellite View"
+          >
             <TileLayer
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              name="ArcGIS Satellite View"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
               maxZoom={19}
               minZoom={3}
             />
           </BaseLayer>
-        <BaseLayer name="ArcGIS Street View">
-          <TileLayer
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
-            maxZoom={19}
-            minZoom={3}
-          />
-        </BaseLayer>
+          <BaseLayer
+            checked={activeBaseLayer === "ArcGIS Street View"}
+            name="ArcGIS Street View"
+          >
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+              name="ArcGIS Street View"
+              eventHandlers={{
+                add: (e) => handleBaseLayerChange(e.target?.options?.name),
+              }}
+              maxZoom={19}
+              minZoom={3}
+            />
+          </BaseLayer>
         </LayersControl>
 
         {Array.isArray(lands) &&
@@ -288,7 +344,9 @@ const MapView = () => {
               return (
                 <Polygon
                   key={land._id}
-                  pathOptions={landAvailabilityStatusColor(land.availabilityStatus)}
+                  pathOptions={landAvailabilityStatusColor(
+                    land.availabilityStatus
+                  )}
                   positions={land.coordinates}
                   eventHandlers={{ click: () => setSelectedLand(land) }}
                 />
@@ -318,6 +376,7 @@ const MapView = () => {
         <SaveMapCenterButton
           mapCenter={currentMapCoordinates}
           currentMapZoom={currentMapZoom}
+          activeBaseLayer={activeBaseLayer}
         />
         <ToolBox
           toolboxOpen={toolboxOpen}

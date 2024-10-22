@@ -3,8 +3,8 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { GpsFixed } from "@mui/icons-material";
 import { toast } from 'react-toastify';
 
-const SaveMapCenterButton = ({ mapCenter, currentMapZoom }) => {
-  const handleMapCenterSave = async (mapCenter, currentMapZoom) => {
+const SaveMapCenterButton = ({ mapCenter, currentMapZoom, activeBaseLayer }) => {
+  const handleMapCenterSave = async (mapCenter, currentMapZoom, activeBaseLayer) => {
     // Step 1: Check browser storage for user_id
     const websiteData = JSON.parse(localStorage.getItem("landVistaData")) || {};
     let userId = websiteData.user_id;
@@ -21,6 +21,7 @@ const SaveMapCenterButton = ({ mapCenter, currentMapZoom }) => {
     }
     websiteData.map_center = mapCenter;
     websiteData.map_zoom = currentMapZoom;
+    websiteData.activeBaseLayer = activeBaseLayer;
     localStorage.setItem("landVistaData", JSON.stringify(websiteData));
     toast.success('Saved map center.');
   };
@@ -31,7 +32,7 @@ const SaveMapCenterButton = ({ mapCenter, currentMapZoom }) => {
           <IconButton
             className="icon-button-style"
             color="primary"
-            onClick={() => handleMapCenterSave(mapCenter, currentMapZoom)}
+            onClick={() => handleMapCenterSave(mapCenter, currentMapZoom, activeBaseLayer)}
           >
             <GpsFixed />
           </IconButton>
