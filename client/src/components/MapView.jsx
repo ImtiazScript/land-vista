@@ -36,7 +36,7 @@ const MapCenterUpdater = ({
     const handleMoveEnd = () => {
       const center = map.getCenter();
       const zoom = map.getZoom();
-      setCurrentMapCoordinates([center.lat, center.lng]);
+      setCurrentMapCoordinates([center.lng, center.lat]);
       setCurrentMapZoom(zoom);
     };
     map.on("moveend", handleMoveEnd);
