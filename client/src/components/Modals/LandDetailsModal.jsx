@@ -43,7 +43,7 @@ const LandDetailsModal = ({ open, onClose, land }) => {
           {land?.name}
         </Typography>
         <img
-          src={land?.imageUrl || "/images/place_holder.png"}
+          src={land?.imageUrl || process.env.REACT_APP_VERCEL_ENV  !== undefined ? "/images/place_holder_vercel.jpg" : "/images/place_holder.png"}
           alt={land?.name}
           style={{
             width: "100%",
