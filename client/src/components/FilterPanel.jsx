@@ -124,7 +124,7 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
               onChange={handleAreaChange}
               valueLabelFormat={(value) => `${value} m`}
               sx={{
-                width: "80%", // Adjust the slider width to give space for the value label
+                width: "80%",
               }}
             />
           </FormControl>
