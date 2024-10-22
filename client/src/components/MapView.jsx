@@ -71,6 +71,29 @@ const MapView = () => {
   const [currentMapZoom, setCurrentMapZoom] = useState(mapZoom);
 
   const [activeBaseLayer, setActiveBaseLayer] = useState();
+
+    // Ask for user's location on initial render and update the map center if allowed
+    useEffect(() => {
+      const websiteData = JSON.parse(localStorage.getItem("landVistaData")) || {};
+      const savedMapCenter = websiteData.map_center;
+      const getUserLocation = () => {
+        if (!savedMapCenter && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              setMapCenter([latitude, longitude]); // Set the map center to the user's current location
+              setCurrentMapCoordinates([latitude, longitude]);
+            },
+            (error) => {
+              console.error("Error getting user's location:", error);
+              // Handle the error if the user denies location access or another issue occurs
+            }
+          );
+        }
+      };
+      getUserLocation();
+    }, []);
+
   // Set the initial center, zoom and layer from local storage, if available;
   useEffect(() => {
     const websiteData = JSON.parse(localStorage.getItem("landVistaData")) || {};
