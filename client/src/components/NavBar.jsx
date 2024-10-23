@@ -1,15 +1,9 @@
 // src/components/NavBar.js
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
@@ -21,11 +15,6 @@ const NavLink = styled(Link)(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
-  };
 
   return (
     <>
