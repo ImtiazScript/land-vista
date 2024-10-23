@@ -1,122 +1,136 @@
 .about-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    animation: fadeIn 1s ease-in-out;
+  padding: 20px;
+  /* font-family: Arial, sans-serif; */
+  background-color: #f9f9f9;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.about-header,
+.add-new-section,
+.filter-section,
+.land-detail-section,
+.search-section,
+.map-layers-section {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+.about-header h2 {
+  font-size: 36px;
+  color: #333;
+}
+
+.intro-text {
+  font-size: 18px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.map-image {
+  max-width: 100%; /* Prevents the image from exceeding the screen width */
+  height: auto; /* Keeps the image's aspect ratio */
+  width: 100%; /* Makes the image fill its container */
+  max-width: 1200px; /* Limits the max width for the image */
+  margin-top: 20px;
+}
+
+.about-content {
+  margin: 40px 0;
+}
+
+.about-content h3 {
+  font-size: 28px;
+  color: #333;
+}
+
+.features-section {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.feature-box {
+  text-align: center;
+  max-width: 250px;
+}
+
+.feature-box h4 {
+  font-size: 22px;
+  color: #444;
+}
+
+.icon {
+  font-size: 36px;
+  color: #007bff;
+  /* margin-bottom: 10px; */
+  /* animation: bounce 2s infinite; */
+}
+
+p {
+  font-size: 16px;
+  color: #666;
+}
+
+.customization-offer {
+  background-color: #e6f7ff;
+  padding: 15px;
+  /* border-left: 4px solid #007bff; */
+  /* margin: 20px 200px 20px 200px; */
+  border-radius: 4px;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: column; /* Make content stack vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Center text content */
+  margin-top: 50px;
+}
+
+.contact-list {
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove padding */
+}
+
+.contact-list li {
+  margin: 10px 0; /* Add spacing between each list item */
+}
+
+.contact-list a {
+  color: #007bff; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+
+.contact-list a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+ul li a {
+  text-decoration: none !important; /* Remove underline */
+  color: inherit; /* Optional: inherit color from the parent element */
+}
+
+ul li a:hover {
+  text-decoration: underline; /* Optional: add underline on hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .about-header {
-    text-align: center;
-    margin-bottom: 30px;
+  to {
+    opacity: 1;
   }
-  
-  .about-header h2 {
-    font-size: 36px;
-    color: #333;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  
-  .intro-text {
-    font-size: 18px;
-    color: #666;
-    margin-top: 10px;
+  50% {
+    transform: translateY(-10px);
   }
-  
-  .map-image {
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .about-content {
-    margin: 40px 0;
-  }
-  
-  .about-content h3 {
-    font-size: 28px;
-    color: #333;
-  }
-  
-  .features-section {
-    display: flex;
-    justify-content: space-around;
-    margin: 30px 0;
-  }
-  
-  .feature-box {
-    text-align: center;
-    max-width: 250px;
-  }
-  
-  .feature-box h4 {
-    font-size: 22px;
-    color: #444;
-  }
-  
-  .icon {
-    font-size: 36px;
-    color: #007bff;
-    /* margin-bottom: 10px; */
-    /* animation: bounce 2s infinite; */
-  }
-  
-  p {
-    font-size: 16px;
-    color: #666;
-  }
-  
-  .customization-offer {
-    background-color: #e6f7ff;
-    padding: 15px;
-    border-left: 4px solid #007bff;
-    margin-top: 20px;
-    border-radius: 4px;
-  }
-  
-  .contact-section {
-    display: flex;
-    flex-direction: column; /* Make content stack vertically */
-    align-items: center; /* Center horizontally */
-    text-align: center; /* Center text content */
-    margin-top: 50px;
-  }
-  
-  .contact-list {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove padding */
-  }
-  
-  .contact-list li {
-    margin: 10px 0; /* Add spacing between each list item */
-  }
-  
-  .contact-list a {
-    color: #007bff; /* Link color */
-    text-decoration: none; /* Remove underline */
-  }
-  
-  .contact-list a:hover {
-    text-decoration: underline; /* Underline on hover */
-  }
-  
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  
+}

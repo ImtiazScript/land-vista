@@ -31,60 +31,19 @@ const NavBar = () => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             <NavLink to="/">Land Vista</NavLink>
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+          <Box sx={{ display: { sm: "flex" } }}>
             <NavLink to="/">
               <Button color="inherit">Map View</Button>
             </NavLink>
             <NavLink to="/about">
               <Button color="inherit">About</Button>
             </NavLink>
-            {/* <Button color="inherit">Login</Button> */}
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-        sx={{ display: { xs: "block", sm: "none" } }}
-      >
-        <List>
-          <ListItem button component={Link} to="/" onClick={handleDrawerToggle}>
-            <ListItemText primary="Home" />
-          </ListItem>
-          <ListItem
-            button
-            component={Link}
-            to="/search"
-            onClick={handleDrawerToggle}
-          >
-            <ListItemText primary="Search" />
-          </ListItem>
-          <ListItem
-            button
-            component={Link}
-            to="/create"
-            onClick={handleDrawerToggle}
-          >
-            <ListItemText primary="Create New" />
-          </ListItem>
-          <ListItem button onClick={handleDrawerToggle}>
-            <ListItemText primary="Login" />
-          </ListItem>
-        </List>
-      </Drawer>
     </>
   );
 };
