@@ -9,10 +9,8 @@ import {
 } from "@mui/material";
 import {
   Close as CloseIcon,
-  AttachMoney as PriceIcon,
-  Home as OwnershipIcon,
-  CheckCircle as StatusIcon,
 } from "@mui/icons-material";
+import { landAvailabilityStatusPlaceHolder } from "../../utils/helper";
 
 const LandDetailsModal = ({ open, onClose, land }) => {
   return (
@@ -43,7 +41,7 @@ const LandDetailsModal = ({ open, onClose, land }) => {
           {land?.name}
         </Typography>
         <img
-          src={land?.imageUrl || process.env.REACT_APP_VERCEL_ENV  !== undefined ? "/images/place_holder_vercel.jpg" : "/images/place_holder.png"}
+          src={land?.imageUrl || process.env.REACT_APP_VERCEL_ENV  !== undefined ? landAvailabilityStatusPlaceHolder(land?.availabilityStatus) : "/images/place_holder.png"}
           alt={land?.name}
           style={{
             width: "100%",

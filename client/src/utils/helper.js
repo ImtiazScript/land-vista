@@ -20,3 +20,26 @@ export const landAvailabilityStatusColor = (availabilityStatus) => {
           return { color: 'black' };
   }
 };
+
+export const landAvailabilityStatusPlaceHolder = (availabilityStatus) => {
+    switch (availabilityStatus) {
+        case 'For Sale':
+            return '/images/for_sale_placeholder.jpg';
+        case 'Sold':
+            return '/images/sold_placeholder.webp';
+        case 'For Rent':
+            return '/images/for_rent_placeholder.jpg';
+        case 'Rented':
+            return '/images/rented_placeholder.jpg';
+        case 'For Lease':
+            return '/images/for_lease_placeholder.webp';
+        case 'Leased':
+            return '/images/leased_placeholder.webp';
+        case 'Not Available':
+            return '/images/not_available_placeholder.jpg';
+        case 'Auction':
+            return '/images/auction_placeholder.jpg';
+        default:
+            return '/images/place_holder.png';
+    }
+  };
