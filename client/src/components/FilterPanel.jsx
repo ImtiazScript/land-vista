@@ -1,6 +1,7 @@
 import {
   Collapse,
   FormControl,
+  FormLabel,
   InputLabel,
   Select,
   MenuItem,
@@ -118,6 +119,7 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
           </FormControl>
 
           <FormControl fullWidth margin="normal">
+          <FormLabel component="legend">Select Area Range (in m²)</FormLabel>
             <Slider
               value={filter.areaRange}
               min={1000}
