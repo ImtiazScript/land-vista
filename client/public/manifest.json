@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Land Vista",
+  "name": "Land Vista - Save, Manage & Filter Land Data",
+  "description": "A map-based tool for saving, managing, and filtering land data. Tailored for landowners and organizations to organize location data effectively.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2a9d8f",
   "background_color": "#ffffff"
 }
