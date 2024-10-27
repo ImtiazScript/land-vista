@@ -8,6 +8,7 @@ import {
   useMap,
   LayersControl,
 } from "react-leaflet";
+import CircularProgress from "@mui/material/CircularProgress";
 import "leaflet/dist/leaflet.css";
 import "leaflet.gridlayer.googlemutant";
 import SaveLandModal from "./Modals/SaveLandModal";
@@ -54,6 +55,7 @@ const MapCenterUpdater = ({
 
 const MapView = () => {
   const [lands, setLands] = useState([]);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [selectedLand, setSelectedLand] = useState(null);
   const [clickedPositions, setClickedPositions] = useState([]);
   const [isCreatingLand, setIsCreatingLand] = useState(false);
@@ -125,17 +127,20 @@ const MapView = () => {
   const [appliedFilter, setAppliedFilter] = useState(filter);
 
   useEffect(() => {
+    if (isInitialLoading) setIsInitialLoading(true);
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/lands`, {
         params: { ...appliedFilter, center: currentMapCoordinates },
       })
-      .then((response) => {
+      .then(async (response) => {
         setLands(response.data);
+        setIsInitialLoading(false);
       })
       .catch((error) => {
+        setIsInitialLoading(false);
         console.error("There was an error fetching the lands!", error);
       });
-  }, [appliedFilter, currentMapCoordinates]);
+  }, [appliedFilter, currentMapCoordinates, isInitialLoading]);
 
   const handleApplyFilter = (newFilter) => {
     setAppliedFilter(newFilter);
@@ -222,6 +227,11 @@ const MapView = () => {
 
   return (
     <>
+      {isInitialLoading && (
+        <div className="loaderOverlayStyle">
+          <CircularProgress color="primary" size={80} thickness={5} />
+        </div>
+      )}
       <MapContainer
         center={mapCenter}
         zoom={mapZoom}
