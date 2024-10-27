@@ -127,11 +127,10 @@ code {
 }
 
 .filterCollapsButton {
-  background-color: #ffffff !important;  /* White background */
-  border-radius: 50% !important;       /* Circular shape */
-  padding: 8px !important;             /* Increased padding for better size */
+  flex-direction: row !important;
+  display: flex !important;
+  justify-content: center;
   transition: background-color 0.3s ease !important; /* Smooth transition for hover effect */
-  margin-left: 140px !important;
 }
 
 .filterButtons {

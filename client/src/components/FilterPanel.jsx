@@ -55,15 +55,16 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
 
       <div className={`filterPanel ${expanded ? "expanded" : "collapsed"}`}>
         <Collapse in={expanded} orientation="horizontal">
-          <FormControl margin="normal">
+          <FormControl margin="normal" className="filterCollapsButton">
             <Tooltip title="Hide filters" placement="right">
               <span>
-                <IconButton
+                <Button
                   onClick={() => setExpanded(!expanded)}
-                  className="filterCollapsButton"
+                  variant="outlined"
+                  fullWidth
                 >
-                  <KeyboardDoubleArrowLeft />
-                </IconButton>
+                  <KeyboardDoubleArrowLeft /> Collapse
+                </Button>
               </span>
             </Tooltip>
           </FormControl>
@@ -119,7 +120,7 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-          <FormLabel component="legend">Select Area Range (in m²)</FormLabel>
+            <FormLabel component="legend">Select Area Range (in m²)</FormLabel>
             <Slider
               value={filter.areaRange}
               min={1000}
