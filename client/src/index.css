@@ -39,7 +39,7 @@ code {
   display: flex;
   justify-content: center;
   width: 500px;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
 }
 
@@ -49,7 +49,7 @@ code {
   right: 10px;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* Correct box-shadow */
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8); /* Correct box-shadow */
   padding: 10px; /* Use px for padding */
   border-radius: 8px; /* Use px or any other unit */
   z-index: 1000;
@@ -64,7 +64,7 @@ code {
   right: 10px;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* Correct box-shadow */
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8); /* Correct box-shadow */
   padding: 10px; /* Use px for padding */
   border-radius: 8px; /* Use px or any other unit */
   z-index: 1000;
@@ -79,7 +79,7 @@ code {
   top: 30%;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
   padding: 8px;
   border-radius: 5px;
   z-index: 1000;
@@ -113,7 +113,7 @@ code {
   left: 10px;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
   /* Correct box-shadow */
   padding: 10px;
   /* Use px for padding */

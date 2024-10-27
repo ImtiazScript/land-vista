@@ -136,7 +136,10 @@ const FilterPanel = ({ filter, setFilter, onApplyFilter, onClearFilter }) => {
 
           <div className="filterButtons">
             <Button
-              onClick={() => onClearFilter()}
+              onClick={() => {
+                setExpanded(!expanded);
+                onClearFilter();
+              }}
               variant="outlined"
               fullWidth
             >
