@@ -20,7 +20,7 @@ const SearchBox = ({ onSearchResultClick }) => {
   const fetchSearchResults = (query) => {
     if (query.length < 4) return;
 
-    const searchUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address=${encodeURIComponent(query)}&maxLocations=10&countryCode=BD&f=json`;
+    const searchUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address=${encodeURIComponent(query)}&maxLocations=10&f=json`;
 
     axios.get(searchUrl)
       .then((response) => {
