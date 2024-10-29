@@ -21,7 +21,7 @@ const LandDetailsModal = ({ open, onClose, land }) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: { xs: 350, sm: 500 }, // Responsive width for mobile and larger screens
+          width: { xs: 350, sm: 500 },
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
