@@ -38,7 +38,8 @@ exports.createLand = async (req, res) => {
 exports.getLands = async (req, res) => {
   try {
     const { type, availabilityStatus, ownershipType, areaRange, center } = req.query;
-    const filter = {};
+    // const filter = { isDeleted: false };
+    const filter = { };
 
     // Check if type is an array, if so use it directly. Otherwise, split by comma if it's a string.
     if (type && Array.isArray(type)) {
@@ -93,3 +94,26 @@ exports.getLands = async (req, res) => {
     res.status(500).send("Error fetching lands");
   }
 };
+
+// Soft delete a created land
+exports.deleteLand = async (req, res) => {
+  try {
+    const { landId } = req.params;
+
+    // Check if the landId exists
+    const land = await Land.findById(landId);
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
+    }
+
+    // Update the isDeleted field to true
+    land.isDeleted = true;
+    await land.save();
+
+    res.status(200).json({ message: "Land deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting land", error);
+    res.status(500).send("Error deleting land");
+  }
+};
+

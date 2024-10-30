@@ -5,5 +5,6 @@ const upload = require('../middleware/uploadMiddleware');
 
 router.get('/', landController.getLands);
 router.post('/', upload.single('image'), landController.createLand);
+router.delete('/delete/:landId', landController.deleteLand);
 
 module.exports = router;
