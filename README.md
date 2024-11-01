@@ -8,7 +8,7 @@ Welcome to the Land Vista! This application allows users to browse lands and vie
 - View details of each land, including name, price, and description.
 - Add new lands with their details.
 
-![Map](https://github.com/imtiazUAP/land-vista/raw/main/images/map.png)
+![Map](https://github.com/ImtiazScript/land-vista/raw/main/images/map.png)
 
 
 ## Technologies Used
@@ -27,7 +27,7 @@ To run the application locally, follow these steps:
 
 1. Clone the repository:
 ```bash
-   git clone https://github.com/imtiazUAP/land-vista.git
+   git clone https://github.com/ImtiazScript/land-vista.git
 ```
 
 2. Navigate to the project directory:
