@@ -1,6 +1,6 @@
 const Land = require('../models/landModel');
 
-// Create a new land
+// Create a new land mapping
 exports.createLand = async (req, res) => {
   try {
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
