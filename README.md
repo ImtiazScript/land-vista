@@ -2,6 +2,8 @@
 
 Welcome to the Land Vista! This application allows users to browse lands and view details on an interactive map.
 
+Vercel deployment: https://land-vista.vercel.app
+
 ## Features
 
 - Browse lands on an interactive map.
